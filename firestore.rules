@@ -1,0 +1,62 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    // Collection: suppliers
+    //   - name: string
+    //   - products: string
+    //   - ngrsa: string
+    // Collection: cleaning_records
+    //   - date: string (ISO date)
+    //   - tasks: map (taskId -> status)
+    //   - responsible: string
+    // Collection: temperature_records
+    //   - date: string (ISO date)
+    //   - vending_temp: number
+    //   - freezer_temp: number
+    //   - responsible: string
+    // Collection: vending_products
+    //   - product: string
+    //   - lot: string
+    //   - entry_date: string
+    //   - quantity: number
+    //   - expiry_date: string
+    //   - retired_quantity: number
+    // Collection: incidents
+    //   - date: string
+    //   - description: string
+    //   - corrective_action: string
+    //   - responsible: string
+    // Collection: training_records
+    //   - date: string
+    //   - employee_name: string
+    //   - position: string
+    //   - training_type: string
+    //   - company: string
+    // Collection: settings
+    //   - last_simulation_date: string
+    //   - responsible_name: string
+    // ===============================================================
+
+    // Helper Functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() && 
+        (request.auth.token.email == "davidhinojo@gmail.com" && request.auth.token.email_verified == true);
+    }
+
+    function isValidDate(dateStr) {
+      return dateStr is string && dateStr.matches("^\\d{4}-\\d{2}-\\d{2}.*");
+    }
+
+    // Rules
+    match /{collection}/{document=**} {
+      allow read, write: if isAdmin();
+    }
+  }
+}

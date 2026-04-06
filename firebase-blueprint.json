@@ -1,0 +1,100 @@
+{
+  "entities": {
+    "supplier": {
+      "title": "Supplier",
+      "description": "List of food and beverage suppliers",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string", "description": "Supplier name" },
+        "products": { "type": "string", "description": "Products supplied" },
+        "ngrsa": { "type": "string", "description": "NGRSA registration number" }
+      },
+      "required": ["name", "products", "ngrsa"]
+    },
+    "cleaning_record": {
+      "title": "Cleaning Record",
+      "description": "Daily cleaning and disinfection log",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date", "description": "ISO date" },
+        "tasks": {
+          "type": "object",
+          "description": "Map of task IDs to status (X or empty)"
+        },
+        "responsible": { "type": "string", "description": "Signature/Name" }
+      },
+      "required": ["date", "tasks"]
+    },
+    "temperature_record": {
+      "title": "Temperature Record",
+      "description": "Daily temperature control log",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date", "description": "ISO date" },
+        "vending_temp": { "type": "number", "description": "Vending machine temp (<= 4°C)" },
+        "jofemar_temp": { "type": "number", "description": "Jofemar machine temp (<= 4°C)" },
+        "freezer_temp": { "type": "number", "description": "Freezer A temp (<= -18°C)" },
+        "freezer_b_temp": { "type": "number", "description": "Freezer B temp (<= -18°C)" },
+        "responsible": { "type": "string", "description": "Signature/Name" }
+      },
+      "required": ["date", "vending_temp", "jofemar_temp", "freezer_temp", "freezer_b_temp"]
+    },
+    "vending_product": {
+      "title": "Vending Product",
+      "description": "Products currently in the vending machine",
+      "type": "object",
+      "properties": {
+        "product": { "type": "string" },
+        "lot": { "type": "string" },
+        "entry_date": { "type": "string", "format": "date" },
+        "quantity": { "type": "number" },
+        "expiry_date": { "type": "string", "format": "date" },
+        "retired_quantity": { "type": "number" }
+      },
+      "required": ["product", "lot", "entry_date", "quantity", "expiry_date"]
+    },
+    "incident": {
+      "title": "Incident",
+      "description": "Incidents and corrective actions",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "description": { "type": "string" },
+        "corrective_action": { "type": "string" },
+        "responsible": { "type": "string" }
+      },
+      "required": ["date", "description", "corrective_action"]
+    },
+    "training_record": {
+      "title": "Training Record",
+      "description": "Employee training log",
+      "type": "object",
+      "properties": {
+        "date": { "type": "string", "format": "date" },
+        "employee_name": { "type": "string" },
+        "position": { "type": "string" },
+        "training_type": { "type": "string" },
+        "company": { "type": "string" }
+      },
+      "required": ["date", "employee_name", "position", "training_type", "company"]
+    },
+    "app_settings": {
+      "title": "App Settings",
+      "description": "Global settings for simulation",
+      "type": "object",
+      "properties": {
+        "last_simulation_date": { "type": "string", "format": "date" },
+        "responsible_name": { "type": "string" }
+      }
+    }
+  },
+  "firestore": {
+    "suppliers": { "schema": "supplier", "description": "List of suppliers" },
+    "cleaning_records": { "schema": "cleaning_record", "description": "Daily cleaning logs" },
+    "temperature_records": { "schema": "temperature_record", "description": "Daily temperature logs" },
+    "vending_products": { "schema": "vending_product", "description": "Products in machine" },
+    "incidents": { "schema": "incident", "description": "Incident logs" },
+    "training_records": { "schema": "training_record", "description": "Training logs" },
+    "settings": { "schema": "app_settings", "description": "App configuration" }
+  }
+}
